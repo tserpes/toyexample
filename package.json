@@ -1,0 +1,21 @@
+{
+  "name": "toyexample",
+  "version": "1.0.0",
+  "description": "A multiplayer game using websockets.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodejs server.js"
+  },
+  "keywords": [
+    "multiplayer",
+    "game",
+    "websockets"
+  ],
+  "author": "K. Tserpes",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0"
+  }
+}

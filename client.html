@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Multiplayer game client</title>
+</head>
+<body>
+	<canvas id="gameArea" tabindex="1"></canvas>
+	<script type="text/javascript">
+		const canvas = document.getElementById('gameArea');
+		canvas.width = 600;
+		canvas.height = 300;
+		const ctx = canvas.getContext('2d');
+
+		const websocket = new WebSocket('ws://localhost:3000/echo');
+		websocket.addEventListener('message',function(event){
+			const message = JSON.parse(event.data);
+			switch(message.type){
+				case 'model':
+						const drawables = message.data;
+						ctx.clearRect(0,0,canvas.width,canvas.height);
+						drawables.forEach(function(drawable){
+							ctx.fillStyle = drawable.color;
+							ctx.fillRect(drawable.topLeftX,drawable.topLeftY,drawable.width,drawable.height);
+						});
+					break;
+				default:
+					break;
+			}
+		});
+
+		websocket.addEventListener('open',function(event){
+			websocket.send(JSON.stringify({type:'command',data:'hello'}));
+		});
+
+		canvas.addEventListener('keyup',function(event){
+			if (event.key == 'ArrowUp' || event.key == 'ArrowDown' || event.key == 'ArrowRight' || event.key == 'ArrowLeft'){
+				const message = {type:'userAction',data:event.key};
+				websocket.send(JSON.stringify(message));
+			}
+		});
+	</script>
+</body>
+</html>
